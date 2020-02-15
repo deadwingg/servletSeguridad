@@ -1,9 +1,7 @@
 package edu.educacionit.utiles;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Array;
+import java.util.*;
 import java.util.stream.Collectors;
 
 class InvalidFormatException extends RuntimeException {}
@@ -39,9 +37,33 @@ public class UriParser {
         }
         return true;
     }
+
+    public boolean validarQueTengaDosId() {
+        String[] arrStrings = uri.split("/");
+
+        if (arrStrings.length < 4){
+            return false;
+        }
+        String id2 = arrStrings[arrStrings.length -1];
+        String id1 = arrStrings[arrStrings.length -2];
+        if (id1.length() != 36 || id2.length() != 36) return false;
+        return true;
+    }
     public String obtenerId() {
         String[] arrStrings = uri.split("/");
         return arrStrings[arrStrings.length-1];
+    }
+    public Map<String, String> obtenerIds() {
+        String[] arrStrings = uri.split("/");
+        Map<String, String> ids = new HashMap<>();
+        int idNumber = 0;
+        for (int i = arrStrings.length - 1; i >= 0  ; i--) {
+            if (arrStrings[i].length() != 36){
+                break;
+            }
+            ids.put("id-"+(++idNumber), arrStrings[i]);
+        }
+        return ids;
     }
     public Map<String, String> generarMapaQueryString() {
         HashMap<String, String> retMap = new HashMap<String, String>();
