@@ -37,6 +37,10 @@
     <servlet-name>auth</servlet-name>
     <servlet-class>edu.educacionit.controllers.Auth</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>enrollments</servlet-name>
+    <servlet-class>edu.educacionit.controllers.InscripcionServlet</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>randomusuario</servlet-name>
@@ -69,5 +73,13 @@
   <servlet-mapping>
     <servlet-name>auth</servlet-name>
     <url-pattern>/login</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>enrollments</servlet-name>
+    <url-pattern>/inscripciones</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>enrollments</servlet-name>
+    <url-pattern>/inscripciones/*</url-pattern>
   </servlet-mapping>
 </web-app>
