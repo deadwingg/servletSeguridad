@@ -1,0 +1,73 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+  <filter>
+    <filter-name>Security</filter-name>
+    <filter-class>edu.educacionit.filtros.SecurityFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>Security</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <servlet>
+    <servlet-name>identificador</servlet-name>
+    <servlet-class>edu.educacionit.PeppaPig</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>randomusuario</servlet-name>
+    <servlet-class>edu.educacionit.controllers.RandomUsuario</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>randomcurso</servlet-name>
+    <servlet-class>edu.educacionit.controllers.RandomCurso</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>users</servlet-name>
+    <servlet-class>edu.educacionit.controllers.UsuarioServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>cursos</servlet-name>
+    <servlet-class>edu.educacionit.controllers.CursoServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>auth</servlet-name>
+    <servlet-class>edu.educacionit.controllers.Auth</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>randomusuario</servlet-name>
+    <url-pattern>/randomusuario</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>randomcurso</servlet-name>
+    <url-pattern>/randomcurso</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>identificador</servlet-name>
+    <url-pattern>/fire</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>users</servlet-name>
+    <url-pattern>/usuario</url-pattern>    
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>users</servlet-name>
+    <url-pattern>/usuario/*</url-pattern>    
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>cursos</servlet-name>
+    <url-pattern>/curso</url-pattern>    
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>cursos</servlet-name>
+    <url-pattern>/curso/*</url-pattern>    
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>auth</servlet-name>
+    <url-pattern>/login</url-pattern>
+  </servlet-mapping>
+</web-app>
