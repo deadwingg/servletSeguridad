@@ -44,11 +44,17 @@ public class ServicioInscripcion {
                 .stream()
                 .filter(curso -> curso.getId().equalsIgnoreCase(cursoID))
                 .findFirst();
+        
         Optional<Usuario> usuarioAAgregar = RepositoryUsuario.usuarios
                 .stream()
                 .filter(usuario -> usuario.getId().equalsIgnoreCase(userID))
                 .findFirst();
 
+        // Aca quedo medio complicado, el objeto inscripcion para mi
+        // debria ser cursoId, userId. nada mas.
+        // si el curso existe, y el id del usuario existe
+        // se da de alta, si no se tira el error correpondiente.
+        
         Optional<Inscripcion> inscripcionAAgregar = RepositoryInscripcion.inscripciones
                 .stream()
                 .filter(inscripcion -> inscripcion.getCursoId().equalsIgnoreCase(cursoID))
