@@ -2,6 +2,8 @@ package edu.educacionit.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import edu.educacionit.errores.CursoNotFoundException;
+import edu.educacionit.errores.UsuarioNotFoundException;
 import edu.educacionit.service.ServicioInscripcion;
 import edu.educacionit.utiles.ParDeIds;
 import edu.educacionit.utiles.UriParser;
@@ -31,14 +33,23 @@ public class InscripcionServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();
         try {
             ParDeIds i = transformarDesdeJSON(req.getInputStream());
+            System.out.println(i);
             serv.agregarInscripcion(i.getCurso(), i.getUsuario());
             resp.setStatus(HttpServletResponse.SC_CREATED);
-            return;
-        } catch (JsonSyntaxException e){
+        } 
+        catch (JsonSyntaxException e){
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             out.println("No se pudo leer el JSON: " + e.getLocalizedMessage());
-            return;
-        } catch (IOException e){
+        } 
+        catch (CursoNotFoundException cnfe) {
+            out.println("El curso no se encontro");
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
+        catch (UsuarioNotFoundException unfe) {
+            out.println("El usuario no se encontro");
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
+        catch (IOException e){
             throw new ServletException();
         }
     }

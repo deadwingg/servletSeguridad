@@ -14,6 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 public class SecurityFilter implements Filter {
     @Override
     public void doFilter(ServletRequest sr, ServletResponse sr1, FilterChain fc) throws IOException, ServletException {
+        
+        fc.doFilter(sr, sr1);
+        return;
+        
+        /*
         String authorization = null;
         
         File f = new File("c:\\var\\log\\ver.txt");
@@ -57,5 +62,6 @@ public class SecurityFilter implements Filter {
         }
         
         fc.doFilter(sr, sr1);
+        */
     }
 }

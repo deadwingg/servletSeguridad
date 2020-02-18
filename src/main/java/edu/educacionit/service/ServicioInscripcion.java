@@ -1,5 +1,7 @@
 package edu.educacionit.service;
 
+import edu.educacionit.errores.CursoNotFoundException;
+import edu.educacionit.errores.UsuarioNotFoundException;
 import edu.educacionit.model.Curso;
 import edu.educacionit.model.Inscripcion;
 import edu.educacionit.model.Usuario;
@@ -9,6 +11,7 @@ import edu.educacionit.repository.RepositoryUsuario;
 
 import java.util.List;
 import java.util.Optional;
+import javax.servlet.http.HttpServletResponse;
 
 public class ServicioInscripcion {
 
@@ -16,14 +19,19 @@ public class ServicioInscripcion {
         return RepositoryInscripcion.inscripciones;
     }
 
+    /*
     public Optional<Inscripcion> obtenerInscripcion(String id){
         return RepositoryInscripcion.inscripciones
                 .stream()
                 .filter(inscripcion -> inscripcion.getCursoId().equalsIgnoreCase(id))
                 .findFirst();
     }
+    */
 
+    
     public boolean borrarInscripcion(String cursoID, String userID){
+        return false;
+        /*
         Optional<Inscripcion> target = RepositoryInscripcion.inscripciones
                 .stream()
                 .filter(inscripcion -> inscripcion.getCursoId().equalsIgnoreCase(cursoID))
@@ -36,49 +44,47 @@ public class ServicioInscripcion {
         } else {
             return false;
         }
+        */
     }
+    
 
     public void agregarInscripcion(String cursoID, String userID){
         //Checkeo si esta en la lista de cursos
-        Optional<Curso> cursoAAgregar = RepositoryCurso.cursos
+        
+        System.out.println(cursoID);
+        System.out.println(userID);
+        
+        Optional<String> cursoAAgregar = RepositoryCurso.cursos
                 .stream()
                 .filter(curso -> curso.getId().equalsIgnoreCase(cursoID))
-                .findFirst();
+                .findFirst()
+                .map( curso -> {
+                    System.out.println("Aca voy a mostrar el map de curso");
+                    System.out.println(curso);
+                    return curso.getId();
+                });
         
-        Optional<Usuario> usuarioAAgregar = RepositoryUsuario.usuarios
+        Optional<String> usuarioAAgregar = RepositoryUsuario.usuarios
                 .stream()
                 .filter(usuario -> usuario.getId().equalsIgnoreCase(userID))
-                .findFirst();
+                .findFirst()
+                .map( usu -> {
+                    System.out.println("Aca voy a poner el id del usuario");
+                    System.out.println(usu);
+                    return usu.getId();
+                } );
 
-        // Aca quedo medio complicado, el objeto inscripcion para mi
-        // debria ser cursoId, userId. nada mas.
-        // si el curso existe, y el id del usuario existe
-        // se da de alta, si no se tira el error correpondiente.
-        
-        Optional<Inscripcion> inscripcionAAgregar = RepositoryInscripcion.inscripciones
-                .stream()
-                .filter(inscripcion -> inscripcion.getCursoId().equalsIgnoreCase(cursoID))
-                .findFirst();
-
-        //si el curso y usuario existen
-        if (cursoAAgregar.isPresent() && usuarioAAgregar.isPresent()){
-            //si la inscripcion ya esta en la lista(curso ya tiene alumnos)
-            if (inscripcionAAgregar.isPresent()){
-                //agrego el usuario
-                inscripcionAAgregar.get().getInscriptos().add(usuarioAAgregar.get());
-            } else {
-                //sino creo un nuevo objeto inscripcion
-                Inscripcion nuevaInscripcion = new Inscripcion(cursoAAgregar.get().getId());
-                nuevaInscripcion.getInscriptos().add(usuarioAAgregar.get());
-                RepositoryInscripcion.inscripciones.add(nuevaInscripcion);
-            }
+        if (cursoAAgregar.isPresent() == false) {
+            throw new CursoNotFoundException();
         }
-        /*if (inscripcionAAgregar.isPresent()){
-            inscripcionAAgregar.get().getInscriptos().add(usuarioAAgregar.get());
-        } else if (cursoAAgregar.isPresent() && usuarioAAgregar.isPresent()){
-            Inscripcion nuevaInscripcion = new Inscripcion(
-                    cursoAAgregar.get().getId());
-            nuevaInscripcion.getInscriptos().add(usuarioAAgregar.get());
-        }*/
+        
+        if (usuarioAAgregar.isPresent() == false) {
+            throw new UsuarioNotFoundException();
+        }
+        
+        Inscripcion nuevaInscripcion 
+                = new Inscripcion(cursoAAgregar.get(), usuarioAAgregar.get());
+        
+        RepositoryInscripcion.inscripciones.add(nuevaInscripcion);
     }
 }
