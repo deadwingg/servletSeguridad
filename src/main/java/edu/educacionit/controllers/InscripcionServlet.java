@@ -4,24 +4,45 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import edu.educacionit.errores.CursoNotFoundException;
 import edu.educacionit.errores.UsuarioNotFoundException;
+import edu.educacionit.model.Inscripcion;
+import edu.educacionit.service.ServicioCurso;
 import edu.educacionit.service.ServicioInscripcion;
+import edu.educacionit.service.ServicioUsuario;
 import edu.educacionit.utiles.ParDeIds;
 import edu.educacionit.utiles.UriParser;
 
+import javax.json.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 public class InscripcionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ServicioInscripcion serv = new ServicioInscripcion();
+        ServicioInscripcion servicioInscripcion = new ServicioInscripcion();
+        ServicioUsuario servicioUsuario = new ServicioUsuario();
+        ServicioCurso servicioCurso = new ServicioCurso();
         PrintWriter out = resp.getWriter();
-        String data = new Gson().toJson(serv.obtenerInscripciones());
+        List<Inscripcion> inscripciones = servicioInscripcion.obtenerInscripciones();
+
+        JsonArrayBuilder dataBuilder = Json.createArrayBuilder();
+
+        for (Inscripcion ins :
+                inscripciones) {
+            JsonObject jsonObject = Json.createObjectBuilder()
+                    .add("cursoID", ins.cursoId)
+                    .add("usuarioID", ins.usuarioId)
+                    .add("cursoName", servicioCurso.obtenerCurso(ins.cursoId).get().getNombre())
+                    .add("usuarioName", servicioUsuario.obtenerUsuario(ins.usuarioId).get().getNombre())
+                    .build();
+            dataBuilder = dataBuilder.add(jsonObject);
+        }
+        JsonArray data = dataBuilder.build();
         resp.setStatus(HttpServletResponse.SC_OK);
         resp.setContentType("application/json");
         out.println(data);
