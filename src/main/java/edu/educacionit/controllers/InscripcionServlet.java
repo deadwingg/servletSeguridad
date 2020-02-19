@@ -69,7 +69,7 @@ public class InscripcionServlet extends HttpServlet {
         String idCurso = ids.get("id-2");
         if (serv.borrarInscripcion(idCurso, idUsuario)){
             resp.setStatus(HttpServletResponse.SC_OK);
-            out.println("Se borro la inscripcion del usuario" + idUsuario +
+            out.println("Se borro la inscripcion del usuario " + idUsuario +
                     "del curso " + idCurso);
             return;
         } else {
@@ -89,7 +89,6 @@ public class InscripcionServlet extends HttpServlet {
         if (nuevaInscripcion.getCurso().length() != 36 || nuevaInscripcion.getUsuario().length() != 36) {
             throw new JsonSyntaxException("Los datos ingresados no son id validas");
         }
-        System.out.println(nuevaInscripcion);
         return nuevaInscripcion;
     }
 }
