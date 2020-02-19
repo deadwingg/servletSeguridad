@@ -30,49 +30,26 @@ public class ServicioInscripcion {
 
     
     public boolean borrarInscripcion(String cursoID, String userID){
-        return false;
-        /*
-        Optional<Inscripcion> target = RepositoryInscripcion.inscripciones
-                .stream()
-                .filter(inscripcion -> inscripcion.getCursoId().equalsIgnoreCase(cursoID))
-                .findFirst();
-        if (target.isPresent()){
-            if (target.get().getInscriptos().removeIf(usuario -> usuario.getId().equalsIgnoreCase(userID))) {
-                return true;
-            }
-            return false;
-        } else {
-            return false;
-        }
-        */
+        return RepositoryInscripcion.inscripciones
+                .removeIf(inscripcion ->
+                        inscripcion.usuarioId.equalsIgnoreCase(userID)
+                            &&
+                            inscripcion.cursoId.equalsIgnoreCase(cursoID));
     }
     
 
     public void agregarInscripcion(String cursoID, String userID){
         //Checkeo si esta en la lista de cursos
-        
-        System.out.println(cursoID);
-        System.out.println(userID);
-        
         Optional<String> cursoAAgregar = RepositoryCurso.cursos
                 .stream()
                 .filter(curso -> curso.getId().equalsIgnoreCase(cursoID))
                 .findFirst()
-                .map( curso -> {
-                    System.out.println("Aca voy a mostrar el map de curso");
-                    System.out.println(curso);
-                    return curso.getId();
-                });
-        
+                .map(Curso::getId);
         Optional<String> usuarioAAgregar = RepositoryUsuario.usuarios
                 .stream()
                 .filter(usuario -> usuario.getId().equalsIgnoreCase(userID))
                 .findFirst()
-                .map( usu -> {
-                    System.out.println("Aca voy a poner el id del usuario");
-                    System.out.println(usu);
-                    return usu.getId();
-                } );
+                .map(Usuario::getId);
 
         if (cursoAAgregar.isPresent() == false) {
             throw new CursoNotFoundException();
