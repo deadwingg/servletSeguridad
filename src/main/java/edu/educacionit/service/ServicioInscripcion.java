@@ -11,7 +11,7 @@ import edu.educacionit.repository.RepositoryUsuario;
 
 import java.util.List;
 import java.util.Optional;
-import javax.servlet.http.HttpServletResponse;
+import java.util.UUID;
 
 public class ServicioInscripcion {
 
@@ -29,12 +29,10 @@ public class ServicioInscripcion {
     */
 
     
-    public boolean borrarInscripcion(String cursoID, String userID){
+    public boolean borrarInscripcion(String inscipcionID){
         return RepositoryInscripcion.inscripciones
                 .removeIf(inscripcion ->
-                        inscripcion.usuarioId.equalsIgnoreCase(userID)
-                            &&
-                            inscripcion.cursoId.equalsIgnoreCase(cursoID));
+                        inscripcion.idInscripcion.equalsIgnoreCase(inscipcionID));
     }
     
 
@@ -60,7 +58,7 @@ public class ServicioInscripcion {
         }
         
         Inscripcion nuevaInscripcion 
-                = new Inscripcion(cursoAAgregar.get(), usuarioAAgregar.get());
+                = new Inscripcion(UUID.randomUUID().toString(), cursoAAgregar.get(), usuarioAAgregar.get());
         
         RepositoryInscripcion.inscripciones.add(nuevaInscripcion);
     }

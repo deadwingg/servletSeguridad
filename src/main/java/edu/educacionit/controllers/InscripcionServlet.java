@@ -59,18 +59,17 @@ public class InscripcionServlet extends HttpServlet {
         ServicioInscripcion serv = new ServicioInscripcion();
         PrintWriter out = resp.getWriter();
         UriParser parser = new UriParser(req.getRequestURI(), req.getQueryString());
-        if (!parser.validarQueTengaDosId()){
+        if (!parser.validarQueTengaId()){
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            out.println("Url must end in /UUIDCurso/UUIDUsuario");
+            out.println("Url must end in /UUIDInscripcion");
             return;
         }
-        Map<String,String> ids = parser.obtenerIds();
-        String idUsuario = ids.get("id-1");
-        String idCurso = ids.get("id-2");
-        if (serv.borrarInscripcion(idCurso, idUsuario)){
+
+        String idInscripcion = parser.obtenerId();
+
+        if (serv.borrarInscripcion(idInscripcion)){
             resp.setStatus(HttpServletResponse.SC_OK);
-            out.println("Se borro la inscripcion del usuario " + idUsuario +
-                    "del curso " + idCurso);
+            out.println("Se borro la inscripcion: " + idInscripcion);
             return;
         } else {
             throw new ServletException();
