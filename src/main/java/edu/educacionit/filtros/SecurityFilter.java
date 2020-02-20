@@ -15,13 +15,12 @@ public class SecurityFilter implements Filter {
     @Override
     public void doFilter(ServletRequest sr, ServletResponse sr1, FilterChain fc) throws IOException, ServletException {
         
-        fc.doFilter(sr, sr1);
-        return;
+        /*fc.doFilter(sr, sr1);
+        return;*/
         
-        /*
         String authorization = null;
         
-        File f = new File("c:\\var\\log\\ver.txt");
+        File f = new File("/var/log/ver.txt");
         HttpServletRequest req = (HttpServletRequest)sr;
         
         Enumeration<String> headers = req.getHeaderNames();
@@ -56,12 +55,11 @@ public class SecurityFilter implements Filter {
         org.apache.commons.io.FileUtils.write(f, System.lineSeparator(), "UTF-8", true);
         
         if (authorization == null) {
-            HttpServletResponse res = (HttpServletResponse)sr1;
-            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
+            org.apache.commons.io.FileUtils.write(f, "no llegó el header, sera rehazado", "UTF-8", true);
+        } else {
+            org.apache.commons.io.FileUtils.write(f, "llega con autorizacion", "UTF-8", true);
         }
         
         fc.doFilter(sr, sr1);
-        */
     }
 }
